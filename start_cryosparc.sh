@@ -6,7 +6,8 @@ export LSCRATCH=${LSCRATCH:-/lscratch/$USER}
 export CRYOSPARC_MASTER_HOSTNAME=${CRYOSPARC_MASTER_HOSTNAME:-localhost}
 
 CRYOSPARC_BASE_PORT=${CRYOSPARC_BASE_PORT:-"39000"}
-# export CRYOSPARC_SUPERVISOR_SOCK_FILE="${LSCRATCH}/cryosparc-supervisor.sock" 
+export CRYOSPARC_SUPERVISOR_SOCK_FILE="${LSCRATCH}/cryosparc-supervisor.sock" 
+mkdir -p ${LSCRATCH}
 
 echo "Starting cryosparc master..."
 cd ${CRYOSPARC_MASTER_DIR}
@@ -18,7 +19,7 @@ cd ${CRYOSPARC_MASTER_DIR}
 #printf "%s\n" "export CRYOSPARC_SUPERVISOR_SOCK_FILE=${CRYOSPARC_SUPERVISOR_SOCK_FILE}" wq | ed -s ${CRYOSPARC_MASTER_DIR}/config.sh
 #printf "%s\n" "export CRYOSPARC_MONGO_EXTRA_FLAGS=\"  --unixSocketPrefix=${LSCRATCH}\"" wq | ed -s ${CRYOSPARC_MASTER_DIR}/config.sh
 echo "export CRYOSPARC_SUPERVISOR_SOCK_FILE=${CRYOSPARC_SUPERVISOR_SOCK_FILE}" >> ${CRYOSPARC_MASTER_DIR}/config.sh
-echo "export CRYOSPARC_MONGO_EXTRA_FLAGS=\"  --unixSocketPrefix=/tmp\"" >> ${CRYOSPARC_MASTER_DIR}/config.sh
+echo "export CRYOSPARC_MONGO_EXTRA_FLAGS=\"  --unixSocketPrefix=${LSCRATCH}\"" >> ${CRYOSPARC_MASTER_DIR}/config.sh
 if ! grep -q 'CRYOSPARC_FORCE_HOSTNAME=true' ${CRYOSPARC_MASTER_DIR}/config.sh; then
   echo 'export CRYOSPARC_FORCE_HOSTNAME=true' >> ${CRYOSPARC_MASTER_DIR}/config.sh
 fi
@@ -36,3 +37,10 @@ rm -f "${CRYOSPARC_SUPERVISOR_SOCK_FILE}" || true
 cryosparcm start database
 cryosparcm fixdbport
 cryosparcm restart
+
+while true
+do
+	#tail -f /app/cryosparc_master/run/*log
+	cryosparcm status
+	sleep 5
+done
