@@ -7,6 +7,7 @@ export CRYOSPARC_MASTER_HOSTNAME=${CRYOSPARC_MASTER_HOSTNAME:-localhost}
 
 CRYOSPARC_BASE_PORT=${CRYOSPARC_BASE_PORT:-"39000"}
 export CRYOSPARC_SUPERVISOR_SOCK_FILE="${LSCRATCH}/cryosparc-supervisor.sock" 
+mkdir -p ${LSCRATCH}
 
 echo "Starting cryosparc master..."
 cd ${CRYOSPARC_MASTER_DIR}
@@ -36,3 +37,10 @@ rm -f "${CRYOSPARC_SUPERVISOR_SOCK_FILE}" || true
 cryosparcm start database
 cryosparcm fixdbport
 cryosparcm restart
+
+while true
+do
+	#tail -f /app/cryosparc_master/run/*log
+	cryosparcm status
+	sleep 5
+done
