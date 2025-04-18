@@ -12,7 +12,6 @@ dnf install nvidia-container-toolkit
 ```sh
 nvidia-ctk cdi generate --output=/etc/cdi/nvidia.yaml
 nvidia-ctk cdi list
-podman run --rm --device nvidia.com/gpu=all --security-opt=label=disable rockylinux:9 nvidia-smi -L
 
 # verify with
 podman run --rm --device nvidia.com/gpu=all --security-opt=label=disable rockylinux:9 nvidia-smi --query-gpu=gpu_name,driver_version --format=csv,noheader
@@ -57,6 +56,7 @@ podman run --detach --device nvidia.com/gpu=all --security-opt=label=disable --p
 # mounts
 podman run --detach --device nvidia.com/gpu=all --security-opt=label=disable --privileged -e CRYOSPARC_LICENSE_ID=${CRYOSPARC_LICENSE_ID} --name cryosparc --hostname cryosparc -p 39000:39000 -p 39001:39001 -p 39002:39002 -p 39003:39003 -p 39004:39004 -v /tmp/mongodb/db:/var/lib/mongo/db -v /tmp/cryosparc/u:/u -v /tmp/cryosparc/exp:/exp localhost/cryosparc-rockylinux9
 ```
+
 ## todos:
 - use cryosparc user to install/run
 ```sh
