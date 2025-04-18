@@ -81,5 +81,9 @@ ENV PATH=$PATH:${CRYOSPARC_MASTER_DIR}/bin
 RUN root_dir_hash=$(echo -n $CRYOSPARC_ROOT_DIR | md5sum | awk '{print $1}')
 RUN export CRYOSPARC_SUPERVISOR_SOCK_FILE=/tmp/cryosparc-supervisor-${root_dir_hash}.sock
 
+# make mount points for workshop data and workspaces
+RUN mkdir -p /nsls2/data/cryoem/workshop
+RUN mkdir -p /nsls2/data/cryoem/legacy/temp_workshop2025_1
+
 ENTRYPOINT ["/start_cryosparc.sh"]
 # CMD ["cryosparcm", "start"]
