@@ -1,4 +1,8 @@
 # build cryosparc installation with podman
+-----
+forked/adopted from https://github.com/slaclab/cryosparc-docker
+to work with rockylinux9 and podman
+-----
 ## install/configure nvidia container toolkit to allow container access to nvidia drivers
 ### for rhel 9
 - first set env var CRYOSPARC_LICENSE_ID={your_license_id}
