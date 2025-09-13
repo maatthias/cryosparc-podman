@@ -52,13 +52,22 @@ nvidia-modprobe && nvidia-modprobe -u
 ```
 
 ## build image
-
+### master
 ```sh
-podman image build --device nvidia.com/gpu=all --security-opt=label=disable --file Containerfile --tag cryosparc-rockylinux9:latest --build-arg CRYOSPARC_LICENSE_ID=$CRYOSPARC_LICENSE_ID --network=host
-# overlay
-podman run --detach --device nvidia.com/gpu=all --security-opt=label=disable --privileged -e CRYOSPARC_LICENSE_ID=${CRYOSPARC_LICENSE_ID} --name cryosparc --hostname cryosparc -p 39000:39000 -p 39001:39001 -p 39002:39002 -p 39003:39003 -p 39004:39004 localhost/cryosparc-rockylinux9
-# mounts
-podman run --detach --device nvidia.com/gpu=all --security-opt=label=disable --privileged -e CRYOSPARC_LICENSE_ID=${CRYOSPARC_LICENSE_ID} --name cryosparc --hostname cryosparc -p 39000:39000 -p 39001:39001 -p 39002:39002 -p 39003:39003 -p 39004:39004 -v /tmp/mongodb/db:/var/lib/mongo/db -v /tmp/cryosparc/u:/u -v /tmp/cryosparc/exp:/exp localhost/cryosparc-rockylinux9
+podman image build --tag cryosparc-rockylinux9:latest --build-arg CRYOSPARC_LICENSE_ID=$CRYOSPARC_LICENSE_ID --file master/Containerfile_master
+
+podman run --detach -e CRYOSPARC_LICENSE_ID=$CRYOSPARC_LICENSE_ID --name cryosparc --hostname cryosparc -p 39000:39000 -p 39001:39001 -p 39002:39002 -p 39003:39003 -p 39004:39004 -p 39005:39005 -p 39006:39006 localhost/cryosparc-rockylinux9
+
+podman logs -f cryosparc
+
+
+
+
+# podman image build --device nvidia.com/gpu=all --security-opt=label=disable --file Containerfile --tag cryosparc-rockylinux9:latest --build-arg CRYOSPARC_LICENSE_ID=$CRYOSPARC_LICENSE_ID --network=host
+# # overlay
+# podman run --detach --device nvidia.com/gpu=all --security-opt=label=disable --privileged -e CRYOSPARC_LICENSE_ID=${CRYOSPARC_LICENSE_ID} --name cryosparc --hostname cryosparc -p 39000:39000 -p 39001:39001 -p 39002:39002 -p 39003:39003 -p 39004:39004 localhost/cryosparc-rockylinux9
+# # mounts
+# podman run --detach --device nvidia.com/gpu=all --security-opt=label=disable --privileged -e CRYOSPARC_LICENSE_ID=${CRYOSPARC_LICENSE_ID} --name cryosparc --hostname cryosparc -p 39000:39000 -p 39001:39001 -p 39002:39002 -p 39003:39003 -p 39004:39004 -v /tmp/mongodb/db:/var/lib/mongo/db -v /tmp/cryosparc/u:/u -v /tmp/cryosparc/exp:/exp localhost/cryosparc-rockylinux9
 ```
 
 ## todos:
