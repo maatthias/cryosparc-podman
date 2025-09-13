@@ -38,6 +38,8 @@ cryosparcm start database
 cryosparcm fixdbport
 cryosparcm restart
 
+cryosparcm createuser --email cryosparc@bnl.gov --password $CRYOSPARC_LICENSE_ID --username "cryosparc" --firstname "Cryo" --lastname "Sparc"
+
 while true
 do
 	#tail -f /app/cryosparc_master/run/*log
