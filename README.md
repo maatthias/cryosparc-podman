@@ -3,6 +3,22 @@
 forked/adopted from https://github.com/slaclab/cryosparc-docker
 to work with rockylinux9 and podman
 -----
+
+## build image
+### master
+
+```sh
+export CRYOSPARC_LICENSE_ID=<your license>
+
+cd master
+
+podman image build --tag cryosparc-rockylinux9:latest --build-arg CRYOSPARC_LICENSE_ID=$CRYOSPARC_LICENSE_ID --squash --file ./Containerfile_master
+
+podman run --detach -e CRYOSPARC_LICENSE_ID=$CRYOSPARC_LICENSE_ID --name cryosparc --hostname cryosparc -p 39000:39000 -p 39001:39001 -p 39002:39002 -p 39003:39003 -p 39004:39004 -p 39005:39005 -p 39006:39006 localhost/cryosparc-rockylinux9
+
+podman logs -f cryosparc
+```
+
 ## install/configure nvidia container toolkit to allow container access to nvidia drivers
 ### for rhel 9
 - first set env var CRYOSPARC_LICENSE_ID={your_license_id}
@@ -51,18 +67,7 @@ nvidia-modprobe && nvidia-modprobe -u
 
 ```
 
-## build image
-### master
 ```sh
-podman image build --tag cryosparc-rockylinux9:latest --build-arg CRYOSPARC_LICENSE_ID=$CRYOSPARC_LICENSE_ID --file master/Containerfile_master
-
-podman run --detach -e CRYOSPARC_LICENSE_ID=$CRYOSPARC_LICENSE_ID --name cryosparc --hostname cryosparc -p 39000:39000 -p 39001:39001 -p 39002:39002 -p 39003:39003 -p 39004:39004 -p 39005:39005 -p 39006:39006 localhost/cryosparc-rockylinux9
-
-podman logs -f cryosparc
-
-
-
-
 # podman image build --device nvidia.com/gpu=all --security-opt=label=disable --file Containerfile --tag cryosparc-rockylinux9:latest --build-arg CRYOSPARC_LICENSE_ID=$CRYOSPARC_LICENSE_ID --network=host
 # # overlay
 # podman run --detach --device nvidia.com/gpu=all --security-opt=label=disable --privileged -e CRYOSPARC_LICENSE_ID=${CRYOSPARC_LICENSE_ID} --name cryosparc --hostname cryosparc -p 39000:39000 -p 39001:39001 -p 39002:39002 -p 39003:39003 -p 39004:39004 localhost/cryosparc-rockylinux9
