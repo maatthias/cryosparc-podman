@@ -1,4 +1,3 @@
-# FROM nvidia/cuda:12.8.1-devel-rockylinux9
 FROM rockylinux:9.6
 
 RUN dnf -y upgrade \
@@ -45,25 +44,6 @@ RUN ./install.sh \
     --yes \
     --license $CRYOSPARC_LICENSE_ID \
     --hostname "localhost"
-    # --standalone \
-    # --allowroot \
-    # --insecure \
-    # --nossd \
-    # --disable_db_auth \
-    # --worker_path ${CRYOSPARC_ROOT_DIR}/cryosparc_worker \
-    # # --ssdpath /scratch/cryosparc_cache \
-    # --initial_email "cryosparc@bnl.gov" \
-    # --initial_password $CRYOSPARC_LICENSE_ID \
-    # --initial_username "cryosparc" \
-    # --initial_firstname "Cryo" \
-    # --initial_lastname "Sparc" \
-    # --port 39000
-
-# # inspect
-# RUN ls -al /tmp/
-# RUN cat config.sh
-# # RUN ps aux | grep -i cryosparc
-# RUN env | sort
 
 COPY start_cryosparc.sh /start_cryosparc.sh
 RUN chmod 0755 /start_cryosparc.sh
@@ -77,4 +57,3 @@ RUN root_dir_hash=$(echo -n $CRYOSPARC_ROOT_DIR | md5sum | awk '{print $1}')
 RUN export CRYOSPARC_SUPERVISOR_SOCK_FILE=/tmp/cryosparc-supervisor-${root_dir_hash}.sock
 
 ENTRYPOINT ["/start_cryosparc.sh"]
-# CMD ["cryosparcm", "start"]
